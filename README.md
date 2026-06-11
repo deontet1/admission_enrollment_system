@@ -20,19 +20,7 @@ I started by reviewing her entire intake process and mapping where things were b
 
 Fully serverless on AWS:
 
-```
-Frontend (Application Form)
-        |
-   API Gateway
-        |
-  Lambda Function
-        |
-DynamoDB (AdmissionsApplications)
-        |
- Amazon SES (Email Notifications)
-        |
- CloudWatch (Logs and Monitoring)
-```
+<img src="docs/screenshots/architecture-diagram.png" width="600" alt="AWS Application Submission Workflow — Serverless Admissions Intake Architecture" />
 
 ---
 
@@ -65,35 +53,57 @@ DynamoDB (AdmissionsApplications)
 ### Application Form
 The live form collecting student applications across six programs with schedule preference and tuition policy disclosure.
 
-![Application Form](docs/screenshots/01-application-form.png)
+<img src="docs/screenshots/Application_pre_submission.png" width="600" alt="Application Form" />
+
+---
+
+### DynamoDB — Table Created
+The AdmissionsApplications table is active in DynamoDB with applicationId as the partition key, ready to receive structured records from every form submission.
+
+<img src="docs/screenshots/DynamoDB_Table_Created.png" width="600" alt="DynamoDB Table Created" />
 
 ---
 
 ### DynamoDB — Applicant Records
 Every submission is stored as a structured record in DynamoDB. The table captures applicationId, name, email, phone, date of birth, program selection, schedule preference, comments, and submission timestamp.
 
-![DynamoDB Records](docs/screenshots/02-dynamodb-records.png)
+<img src="docs/screenshots/Application_received.png" width="600" alt="DynamoDB Records" />
 
 ---
 
 ### API Gateway — POST /apply Route
 The AdmissionsAPI is deployed in us-east-1 with a single POST /apply route wired directly to the Lambda function.
 
-![API Gateway](docs/screenshots/03-api-gateway-routes.png)
+<img src="docs/screenshots/Api_gateway_console.png" width="600" alt="API Gateway" />
 
 ---
 
-### Lambda — SubmitApplicationFunction
-The SubmitApplicationFunction handles validation, DynamoDB writes, and SES notifications. API Gateway is configured as the trigger with a live endpoint.
+### Amazon SES — Identity Verification
+The sender email identity was created in SES and is pending verification. Once verified, the Lambda function will use it to dispatch confirmation emails to applicants automatically.
 
-![Lambda Function](docs/screenshots/04-lambda-function.png)
+<img src="docs/screenshots/Creating_an_identity_.png" width="600" alt="SES Identity" />
 
 ---
 
 ### CloudWatch — Execution Logs
-Every function invocation is logged in CloudWatch. The REPORT log confirms execution time, billed duration, memory size, and max memory used per run.
+Every function invocation is logged in CloudWatch. The logs confirm the Lambda triggered, the Textract job started, and execution completed without errors.
 
-![CloudWatch Logs](docs/screenshots/05-cloudwatch-logs.png)
+<img src="docs/screenshots/cloudwatch-success-logs.png" width="600" alt="CloudWatch Logs" />
+
+---
+
+### Backend — Successful End-to-End Run
+Full end-to-end test confirming the application was received, processed, written to DynamoDB, and the email notification dispatched without errors.
+
+<img src="docs/screenshots/backend_success_problem_resolved.png" width="600" alt="Backend Success" />
+
+---
+
+## What Went Wrong
+
+I discovered that applications were not saving to DynamoDB because the Lambda function was failing before it ever reached the database write. The SES email step was running first, and it was failing because the email identity had not been verified and SES had been set up in the wrong region. Once SES threw an error, the function stopped entirely and the data was never written.
+
+I fixed this by moving the DynamoDB write to the beginning of the function so the record is saved regardless of what happens downstream. I wrapped the SES email call in a try/except block so an email failure logs a warning without killing the rest of the execution. I also verified the email identity and recreated the SES configuration in the correct region. After those changes the workflow became reliable and the intake process worked end to end as expected.
 
 ---
 
