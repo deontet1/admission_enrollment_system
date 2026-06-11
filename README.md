@@ -20,7 +20,7 @@ I started by reviewing her entire intake process and mapping where things were b
 
 Fully serverless on AWS:
 
-<img src="docs/screenshots/architecture-diagram.png" width="600" alt="AWS Application Submission Workflow — Serverless Admissions Intake Architecture" />
+![AWS Application Submission Workflow — Serverless Admissions Intake Architecture](docs/screenshots/architecture-diagram.png)
 
 ---
 
@@ -53,49 +53,49 @@ Fully serverless on AWS:
 ### Application Form
 The live form collecting student applications across six programs with schedule preference and tuition policy disclosure.
 
-<img src="docs/screenshots/Application_pre_submission.png" width="600" alt="Application Form" />
+![Application Form](docs/screenshots/Application_pre_submission.png)
 
 ---
 
 ### DynamoDB — Table Created
 The AdmissionsApplications table is active in DynamoDB with applicationId as the partition key, ready to receive structured records from every form submission.
 
-<img src="docs/screenshots/DynamoDB_Table_Created.png" width="600" alt="DynamoDB Table Created" />
+![DynamoDB Table Created](docs/screenshots/DynamoDB_Table_Created.png)
 
 ---
 
 ### DynamoDB — Applicant Records
 Every submission is stored as a structured record in DynamoDB. The table captures applicationId, name, email, phone, date of birth, program selection, schedule preference, comments, and submission timestamp.
 
-<img src="docs/screenshots/Application_received.png" width="600" alt="DynamoDB Records" />
+![DynamoDB Records](docs/screenshots/Application_received.png)
 
 ---
 
 ### API Gateway — POST /apply Route
 The AdmissionsAPI is deployed in us-east-1 with a single POST /apply route wired directly to the Lambda function.
 
-<img src="docs/screenshots/Api_gateway_console.png" width="600" alt="API Gateway" />
+![API Gateway](docs/screenshots/Api_gateway_console.png)
 
 ---
 
 ### Amazon SES — Identity Verification
 The sender email identity was created in SES and is pending verification. Once verified, the Lambda function will use it to dispatch confirmation emails to applicants automatically.
 
-<img src="docs/screenshots/Creating_an_identity_.png" width="600" alt="SES Identity" />
+![SES Identity](docs/screenshots/Creating_an_identity_.png)
 
 ---
 
 ### CloudWatch — Execution Logs
 Every function invocation is logged in CloudWatch. The logs confirm the Lambda triggered, the Textract job started, and execution completed without errors.
 
-<img src="docs/screenshots/cloudwatch-success-logs.png" width="600" alt="CloudWatch Logs" />
+![CloudWatch Logs](docs/screenshots/cloudwatch-success-logs.png)
 
 ---
 
 ### Backend — Successful End-to-End Run
 Full end-to-end test confirming the application was received, processed, written to DynamoDB, and the email notification dispatched without errors.
 
-<img src="docs/screenshots/backend_success_problem_resolved.png" width="600" alt="Backend Success" />
+![Backend Success](docs/screenshots/backend_success_problem_resolved.png)
 
 ---
 
