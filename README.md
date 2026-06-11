@@ -20,7 +20,7 @@ I started by reviewing her entire intake process and mapping where things were b
 
 Fully serverless on AWS:
 
-![AWS Application Submission Workflow — Serverless Admissions Intake Architecture](docs/screenshots/architecture-diagram.png)
+![AWS Application Submission Workflow — Serverless Admissions Intake Architecture](https://raw.githubusercontent.com/deontet1/admission_enrollment_system/main/Architecture%20Diagram.png)
 
 ---
 
@@ -53,49 +53,49 @@ Fully serverless on AWS:
 ### Application Form
 The live form collecting student applications across six programs with schedule preference and tuition policy disclosure.
 
-![Application Form](docs/screenshots/Application_pre_submission.png)
+![Application Form](https://raw.githubusercontent.com/deontet1/admission_enrollment_system/main/Application_pre_submission.png)
 
 ---
 
 ### DynamoDB — Table Created
 The AdmissionsApplications table is active in DynamoDB with applicationId as the partition key, ready to receive structured records from every form submission.
 
-![DynamoDB Table Created](docs/screenshots/DynamoDB_Table_Created.png)
+![DynamoDB Table Created](https://raw.githubusercontent.com/deontet1/admission_enrollment_system/main/DynamoDB%20Table%20Created.png)
 
 ---
 
 ### DynamoDB — Applicant Records
 Every submission is stored as a structured record in DynamoDB. The table captures applicationId, name, email, phone, date of birth, program selection, schedule preference, comments, and submission timestamp.
 
-![DynamoDB Records](docs/screenshots/Application_received.png)
+![DynamoDB Records](https://raw.githubusercontent.com/deontet1/admission_enrollment_system/main/Application_received.png)
 
 ---
 
 ### API Gateway — POST /apply Route
 The AdmissionsAPI is deployed in us-east-1 with a single POST /apply route wired directly to the Lambda function.
 
-![API Gateway](docs/screenshots/Api_gateway_console.png)
+![API Gateway](https://raw.githubusercontent.com/deontet1/admission_enrollment_system/main/Api_gateway_console.png)
 
 ---
 
 ### Amazon SES — Identity Verification
 The sender email identity was created in SES and is pending verification. Once verified, the Lambda function will use it to dispatch confirmation emails to applicants automatically.
 
-![SES Identity](docs/screenshots/Creating_an_identity_.png)
+![SES Identity](https://raw.githubusercontent.com/deontet1/admission_enrollment_system/main/Creating%20an%20identity%20.png)
 
 ---
 
 ### CloudWatch — Execution Logs
 Every function invocation is logged in CloudWatch. The logs confirm the Lambda triggered, the Textract job started, and execution completed without errors.
 
-![CloudWatch Logs](docs/screenshots/cloudwatch-success-logs.png)
+![CloudWatch Logs](https://raw.githubusercontent.com/deontet1/admission_enrollment_system/main/cloudwatch-success-logs.png)
 
 ---
 
 ### Backend — Successful End-to-End Run
 Full end-to-end test confirming the application was received, processed, written to DynamoDB, and the email notification dispatched without errors.
 
-![Backend Success](docs/screenshots/backend_success_problem_resolved.png)
+![Backend Success](https://raw.githubusercontent.com/deontet1/admission_enrollment_system/main/backend%20success%20problem%20resolved.png)
 
 ---
 
