@@ -10,7 +10,7 @@ The client was managing student intake across email, social media, and direct me
 
 ---
 
-## What We Built
+## What I Built
 
 I started by reviewing her entire intake process and mapping where things were breaking down. From there I recommended moving admissions to AWS and walked her through why a serverless approach made sense for her business. She was skeptical at first so we agreed to prove it out with a Phase 1 MVP before going further. Once she saw it running with real applications flowing through and a clean user experience on the front end, she approved Phase 2 on the spot.
 
